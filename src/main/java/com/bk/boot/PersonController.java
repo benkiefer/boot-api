@@ -1,30 +1,29 @@
 package com.bk.boot;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.web.bind.annotation.RequestMethod.*;
+
 @RestController
 public class PersonController {
     private List<Person> people = new ArrayList<>();
+
     @PostConstruct
     public void init() {
         people.add(new Person("Ben", "Kiefer"));
     }
 
-    @RequestMapping("/person")
-    public @ResponseBody
-    List<Person> people() {
+    @RequestMapping(value = "/person", method = GET)
+    public @ResponseBody List<Person> people() {
         return people;
     }
 
-    @RequestMapping("/person/{first}/{last}")
+    @RequestMapping(value = "/person/{first}/{last}", method = GET)
     public @ResponseBody Person person(@PathVariable String first, @PathVariable String last) {
         return findBy(first, last).orElse(add(first, last));
     }
